@@ -1,4 +1,4 @@
-# sms-aws-sqs-python
+# sms-aws-sqs-python-sender
 Python function to store bulk sms messages to AWS SQS for 1 per second sending.
 
 ## Prerequisites
