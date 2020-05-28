@@ -1,8 +1,7 @@
 
 import boto3
 import nexmo
-import random
-import string
+import uuid
 from flask import Flask, request
 app = Flask(__name__)
 app.config.from_pyfile('.env')
@@ -20,7 +19,6 @@ def add():
 
     if request.method == 'POST':
         message = request.get_json()
-        group_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=16))
         response = sqs.send_message(
             QueueUrl=app.config.get('AWS_SQS_URL'),
             MessageAttributes={
@@ -36,7 +34,8 @@ def add():
             MessageBody=(
                 message['message']
             ),
-            MessageGroupId=group_id
+            MessageDeduplicationId=str(uuid.uuid1()),
+            MessageGroupId=str(uuid.uuid1())
         )
 
     if response['MessageId']:
